@@ -82,54 +82,53 @@ export default function TfDetector() {
   }, [tfEnabled]);
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
-      <button
-        onClick={toggleTf}
-        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-          tfEnabled
-            ? 'bg-green-600 text-white shadow-lg shadow-green-600/30'
-            : 'bg-[#1a2235] border border-[#1e2d45] text-[#9ca3af] hover:border-green-500/50'
-        }`}
-      >
-        {tfEnabled ? '🧠 TF检测中...' : '🎥 开启真实检测'}
-      </button>
-
-      <AnimatePresence>
-        {tfEnabled && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="absolute bottom-full mb-2 right-0 w-80 bg-[#111827] border border-[#1e2d45] rounded-xl overflow-hidden shadow-2xl"
-          >
-            <div className="relative">
-              <video ref={videoRef} className="w-full" muted playsInline />
-              <canvas
-                ref={canvasRef}
-                className="absolute top-0 left-0 w-full h-full pointer-events-none"
-              />
-              {loading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                  <div className="text-sm text-white">加载模型中...</div>
-                </div>
-              )}
-              {error && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
-                  <div className="text-sm text-red-400 text-center px-4">{error}</div>
-                </div>
-              )}
-            </div>
-            <div className="p-2 text-xs text-[#9ca3af]">
-              检测到 {detections.length} 个目标
-              {detections.slice(0, 3).map((d: any, i: number) => (
-                <span key={i} className="ml-2 text-green-400">
-                  {d.class} ({Math.round(d.score * 100)}%)
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+    <AnimatePresence>
+      {tfEnabled && (
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 20, scale: 0.95 }}
+          className="fixed bottom-16 right-4 z-40 w-72 bg-[#111827] border border-[#1e2d45] rounded-xl overflow-hidden shadow-2xl"
+        >
+          <div className="flex items-center justify-between px-3 py-2 bg-[#0d1320] border-b border-[#1e2d45]">
+            <span className="text-xs font-medium">🧠 实时AI检测</span>
+            <button
+              onClick={toggleTf}
+              className="text-[#6b7280] hover:text-white text-sm transition-colors"
+            >
+              ✕
+            </button>
+          </div>
+          <div className="relative">
+            <video ref={videoRef} className="w-full" muted playsInline />
+            <canvas
+              ref={canvasRef}
+              className="absolute top-0 left-0 w-full h-full pointer-events-none"
+            />
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                <div className="text-xs text-white">加载模型中...</div>
+              </div>
+            )}
+            {error && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                <div className="text-xs text-red-400 text-center px-3">{error}</div>
+              </div>
+            )}
+          </div>
+          <div className="px-3 py-2 text-[10px] text-[#6b7280] bg-[#0d1320] border-t border-[#1e2d45]">
+            检测到 {detections.length} 个目标
+            {detections.slice(0, 2).map((d: any, i: number) => (
+              <span key={i} className="ml-1.5 text-green-400">
+                {d.class}({Math.round(d.score * 100)}%)
+              </span>
+            ))}
+            {detections.length === 0 && !loading && (
+              <span className="ml-1.5 text-[#6b7280]">—</span>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

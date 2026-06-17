@@ -10,6 +10,7 @@ export default function TopBar() {
   const currentScenario = useStore((s) => s.currentScenario);
   const setScenario = useStore((s) => s.setScenario);
   const tfEnabled = useStore((s) => s.tfEnabled);
+  const toggleTf = useStore((s) => s.toggleTf);
 
   return (
     <header className="h-12 border-b border-[#1e2d45] bg-[#0f1621] flex items-center justify-between px-5 shrink-0 backdrop-blur-sm">
@@ -43,6 +44,17 @@ export default function TopBar() {
         </div>
 
         <div className="flex items-center gap-2 ml-1 pl-3 border-l border-[#1e2d45]">
+          <button
+            onClick={toggleTf}
+            className={`text-[10px] px-2 py-0.5 rounded border transition-all ${
+              tfEnabled
+                ? 'bg-green-600/20 border-green-500/30 text-green-400'
+                : 'border-[#1e2d45] text-[#6b7280] hover:border-cyan-500/30 hover:text-cyan-400'
+            }`}
+            title={tfEnabled ? '关闭真实检测' : '开启真实检测'}
+          >
+            {tfEnabled ? '🧠 TF' : '🎥 TF'}
+          </button>
           <span className="text-[10px] text-[#6b7280] bg-[#1a2235] px-1.5 py-0.5 rounded border border-[#1e2d45]">
             v2.1.0
           </span>
