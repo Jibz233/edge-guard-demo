@@ -16,7 +16,7 @@ export default function TopBar() {
     <header className="h-12 border-b border-[#1e2d45] bg-[#0f1621] flex items-center justify-between px-5 shrink-0 backdrop-blur-sm">
       <div className="flex items-center gap-3">
         <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold shadow-lg shadow-blue-500/20">
-          慧
+          H
         </div>
         <span className="text-base font-semibold tracking-wide">
           慧眼 <span className="text-[#6b7280] font-normal text-xs ml-1.5">边缘AI巡检平台</span>
