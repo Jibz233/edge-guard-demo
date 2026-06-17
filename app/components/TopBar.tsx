@@ -4,6 +4,7 @@
 import { useStore } from '@/lib/useStore';
 import { ScenarioId } from '@/lib/types';
 import { scenarioTemplates } from '@/lib/scenario-templates';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function TopBar() {
   const currentScenario = useStore((s) => s.currentScenario);
@@ -16,9 +17,18 @@ export default function TopBar() {
         <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-sm font-bold">
           慧
         </div>
-        <span className="text-lg font-semibold tracking-wide">
-          慧眼 <span className="text-[#9ca3af] font-normal text-sm ml-1">边缘AI巡检平台</span>
-        </span>
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={currentScenario}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="text-lg font-semibold tracking-wide"
+          >
+            慧眼 <span className="text-[#9ca3af] font-normal text-sm ml-1">边缘AI巡检平台</span>
+          </motion.span>
+        </AnimatePresence>
       </div>
 
       <div className="flex items-center gap-4">
