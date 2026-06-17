@@ -12,37 +12,27 @@ export default function TopBar() {
   const tfEnabled = useStore((s) => s.tfEnabled);
 
   return (
-    <header className="h-14 border-b border-[#1e2d45] bg-[#111827] flex items-center justify-between px-5 shrink-0">
+    <header className="h-12 border-b border-[#1e2d45] bg-[#0f1621] flex items-center justify-between px-5 shrink-0 backdrop-blur-sm">
       <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-sm font-bold">
+        <div className="w-7 h-7 rounded-md bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-xs font-bold shadow-lg shadow-blue-500/20">
           慧
         </div>
-        <AnimatePresence mode="wait">
-          <motion.span
-            key={currentScenario}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="text-lg font-semibold tracking-wide"
-          >
-            慧眼 <span className="text-[#9ca3af] font-normal text-sm ml-1">边缘AI巡检平台</span>
-          </motion.span>
-        </AnimatePresence>
+        <span className="text-base font-semibold tracking-wide">
+          慧眼 <span className="text-[#6b7280] font-normal text-xs ml-1.5">边缘AI巡检平台</span>
+        </span>
+        <div className="hidden sm:flex items-center gap-1.5 ml-3 pl-3 border-l border-[#1e2d45]">
+          <span className={`w-1.5 h-1.5 rounded-full ${tfEnabled ? 'bg-green-500 shadow-[0_0_6px_rgba(34,197,94,0.5)]' : 'bg-cyan-500 shadow-[0_0_6px_rgba(6,182,212,0.5)]'}`} />
+          <span className="text-xs text-[#6b7280]">系统正常</span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <span className={`w-2 h-2 rounded-full ${tfEnabled ? 'bg-green-500' : 'bg-cyan-500'}`} />
-          <span className="text-sm text-[#9ca3af]">系统正常</span>
-        </div>
-
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-[#9ca3af]">场景:</span>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 text-xs">
+          <span className="text-[#6b7280]">巡检方案</span>
           <select
             value={currentScenario}
             onChange={(e) => setScenario(e.target.value as ScenarioId)}
-            className="bg-[#1a2235] border border-[#1e2d45] rounded px-3 py-1 text-sm focus:outline-none focus:border-blue-500 cursor-pointer"
+            className="bg-[#111827] border border-[#1e2d45] rounded-md px-2.5 py-1 text-xs focus:outline-none focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/20 cursor-pointer appearance-none pr-6"
           >
             {scenarioTemplates.map((t) => (
               <option key={t.id} value={t.id}>
@@ -52,9 +42,11 @@ export default function TopBar() {
           </select>
         </div>
 
-        <button className="text-[#9ca3af] hover:text-white text-lg transition-colors" title="设置">
-          ⚙
-        </button>
+        <div className="flex items-center gap-2 ml-1 pl-3 border-l border-[#1e2d45]">
+          <span className="text-[10px] text-[#6b7280] bg-[#1a2235] px-1.5 py-0.5 rounded border border-[#1e2d45]">
+            v2.1.0
+          </span>
+        </div>
       </div>
     </header>
   );

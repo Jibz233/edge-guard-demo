@@ -32,27 +32,27 @@ function CountUp({ value, format }: { value: number; format: (v: number) => stri
     }, 16);
     return () => clearInterval(timer);
   }, [value]);
-  return <span className="text-2xl font-bold tabular-nums">{format(Math.round(display))}</span>;
+  return <span className="text-xl font-bold tabular-nums">{format(Math.round(display))}</span>;
 }
 
 export default function StatsCards() {
   const stats = useStore((s) => s.stats);
 
   return (
-    <div className="grid grid-cols-5 gap-3 px-5 py-3">
+    <div className="grid grid-cols-5 gap-2 px-5 py-2">
       {cards.map(({ key, label, icon, format }) => (
         <motion.div
           key={key}
-          className="bg-[#1a2235] border border-[#1e2d45] rounded-lg p-3 flex flex-col gap-1"
+          className="bg-gradient-to-b from-[#151d2b] to-[#111827] border border-[#1e2d45] rounded-lg px-3 py-2 flex items-center justify-between hover:border-[#1e2d45]/80 hover:shadow-md transition-all duration-200"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <div className="flex items-center justify-between">
-            <span className="text-xs text-[#9ca3af]">{label}</span>
-            <span className="text-sm">{icon}</span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-[10px] text-[#6b7280] uppercase tracking-wide">{label}</span>
+            <CountUp value={stats[key]} format={format} />
           </div>
-          <CountUp value={stats[key]} format={format} />
+          <span className="text-lg opacity-60">{icon}</span>
         </motion.div>
       ))}
     </div>

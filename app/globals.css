@@ -29,6 +29,35 @@ body {
   height: 100vh;
 }
 
+/* Subtle grid background for operations center feel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(30, 45, 69, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 45, 69, 0.15) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Add a slight vignette */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content renders above background effects */
+#__next, main {
+  position: relative;
+  z-index: 1;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 4px;

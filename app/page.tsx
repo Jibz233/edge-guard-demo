@@ -20,7 +20,7 @@ export default function Home() {
   }, [tick]);
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col relative z-10">
       <TopBar />
       <StatsCards />
       <div className="flex-1 flex min-h-0">
