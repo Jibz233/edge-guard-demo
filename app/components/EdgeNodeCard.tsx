@@ -1,8 +1,8 @@
 'use client';
 
 import { EdgeNode } from '@/lib/types';
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useRef } from 'react';
 
 const statusColors = {
   healthy: { bar: 'bg-green-500', text: 'text-green-500', glow: 'shadow-[0_0_10px_rgba(34,197,94,0.3)]', ring: 'ring-green-500/20' },
@@ -11,13 +11,27 @@ const statusColors = {
 };
 
 export default function EdgeNodeCard({ node }: { node: EdgeNode }) {
-  const [showDetail, setShowDetail] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const hideTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const colors = statusColors[node.status];
+
+  const handleMouseEnter = () => {
+    if (hideTimer.current) {
+      clearTimeout(hideTimer.current);
+      hideTimer.current = null;
+    }
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    hideTimer.current = setTimeout(() => setIsHovered(false), 150);
+  };
 
   return (
     <motion.div
-      className="relative flex flex-col items-center gap-1 cursor-pointer"
-      onClick={() => setShowDetail(!showDetail)}
+      className="relative flex flex-col items-center gap-1"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       whileHover={{ scale: 1.08 }}
     >
       {/* Node icon */}
@@ -45,27 +59,31 @@ export default function EdgeNodeCard({ node }: { node: EdgeNode }) {
         <span>{node.latency.toFixed(0)}ms</span>
       </div>
 
-      {showDetail && (
-        <motion.div
-          initial={{ opacity: 0, y: 8, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          className="absolute bottom-full mb-3 bg-[#151d2b] border border-[#1e2d45] rounded-lg p-3 min-w-[150px] z-20 shadow-2xl"
-        >
-          <div className="text-xs font-semibold mb-2 pb-1.5 border-b border-[#1e2d45]">{node.name}</div>
-          <div className="space-y-1.5 text-[11px] text-[#6b7280]">
-            <div className="flex justify-between"><span>负载</span><span className="text-white font-medium">{node.load.toFixed(0)}%</span></div>
-            <div className="flex justify-between"><span>延迟</span><span className="text-white font-medium">{node.latency.toFixed(0)}ms</span></div>
-            <div className="flex justify-between"><span>推理帧率</span><span className="text-white font-medium">{node.fps} FPS</span></div>
-            <div className="flex justify-between"><span>接入摄像头</span><span className="text-white font-medium">{node.cameraIds.length}</span></div>
-            <div className="flex justify-between">
-              <span>状态</span>
-              <span className={`${colors.text} font-medium`}>
-                {node.status === 'healthy' ? '正常' : node.status === 'busy' ? '繁忙' : '异常'}
-              </span>
+      <AnimatePresence>
+        {isHovered && (
+          <motion.div
+            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute bottom-full mb-3 bg-[#151d2b] border border-[#1e2d45] rounded-lg p-3 min-w-[150px] z-20 shadow-2xl pointer-events-none"
+          >
+            <div className="text-xs font-semibold mb-2 pb-1.5 border-b border-[#1e2d45]">{node.name}</div>
+            <div className="space-y-1.5 text-[11px] text-[#6b7280]">
+              <div className="flex justify-between"><span>负载</span><span className="text-white font-medium">{node.load.toFixed(0)}%</span></div>
+              <div className="flex justify-between"><span>延迟</span><span className="text-white font-medium">{node.latency.toFixed(0)}ms</span></div>
+              <div className="flex justify-between"><span>推理帧率</span><span className="text-white font-medium">{node.fps} FPS</span></div>
+              <div className="flex justify-between"><span>接入摄像头</span><span className="text-white font-medium">{node.cameraIds.length}</span></div>
+              <div className="flex justify-between">
+                <span>状态</span>
+                <span className={`${colors.text} font-medium`}>
+                  {node.status === 'healthy' ? '正常' : node.status === 'busy' ? '繁忙' : '异常'}
+                </span>
+              </div>
             </div>
-          </div>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
