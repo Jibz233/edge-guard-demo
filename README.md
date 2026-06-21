@@ -129,7 +129,7 @@ edge-guard-demo/
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/YOUR_USERNAME/edge-guard-demo.git
+git clone https://github.com/Jibz233/edge-guard-demo.git
 cd edge-guard-demo
 
 # 2. 安装依赖
